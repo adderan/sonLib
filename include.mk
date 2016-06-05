@@ -29,7 +29,7 @@ cflags_opt = -O3 -g -Wall --pedantic -funroll-loops -DNDEBUG
 cppflags_opt = -O3 -g -Wall -funroll-loops -DNDEBUG
 
 #Debug flags (slow)
-cflags_dbg = -Wall -Werror --pedantic -g -fno-inline -UNDEBUG -Wno-error=unused-result
+cflags_dbg = -Wall -Werror --pedantic -g -fno-inline -UNDEBUG -Wno-error=unused-result -rdynamic
 cppflags_dbg = -Wall -g -O0 -fno-inline -UNDEBUG
 
 #Ultra Debug flags (really slow)
@@ -42,7 +42,7 @@ cflags_prof = -Wall -Werror --pedantic -pg -O3 -g -Wno-error=unused-result
 cppflags = ${cppflags_opt} 
 
 #Flags to use
-cflags = ${cflags_opt} 
+cflags = ${cflags_dbg} 
 
 # location of Tokyo cabinet
 ifndef tokyoCabinetLib

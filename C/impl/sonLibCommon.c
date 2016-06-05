@@ -13,9 +13,27 @@
 
 #include "sonLibGlobalsInternal.h"
 #include <errno.h>
+#include <execinfo.h>
 
 static enum stLogLevel LOG_LEVEL = critical;
+void
+print_trace (void)
+{
+    void *array[10];
+    size_t size;
+    char **strings;
+    size_t i;
 
+    size = backtrace (array, 10);
+    strings = backtrace_symbols (array, size);
+
+    fprintf (stderr, "Obtained %zd stack frames.\n", size);
+
+    for (i = 0; i < size; i++)
+        fprintf (stderr, "%s\n", strings[i]);
+
+    free (strings);
+}
 void *st_malloc(size_t i) {
     void *j;
     j = malloc(i);
@@ -31,6 +49,7 @@ void *st_realloc(void *buffer, size_t desiredSize) {
     void *newBuffer = realloc(buffer, desiredSize);
     if(newBuffer == NULL) {
         fprintf(stderr, "Realloc failed with a request for: %zu bytes\n", desiredSize);
+        print_trace();
         assert(0);
         exit(1);
     }
